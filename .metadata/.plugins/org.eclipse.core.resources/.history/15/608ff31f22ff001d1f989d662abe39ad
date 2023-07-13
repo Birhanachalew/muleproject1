@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:tracking="http://www.mulesoft.org/schema/mule/ee/tracking" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/tracking http://www.mulesoft.org/schema/mule/ee/tracking/current/mule-tracking-ee.xsd">
+	<http:listener-config name="HTTP_Listener_Configuration" host="localhost" port="8081" basePath="/" doc:name="HTTP Listener Configuration"/>
+	<http:listener-config name="HTTP_Listener_Configuration1" host="0.0.0.0" port="8081" basePath="/" doc:name="HTTP Listener Configuration"/>
+	<queued-thread-per-processor-processing-strategy name="Queued_Thread_Per_Processor_Processing_Strategy" doc:name="Queued Thread Per Processor Processing Strategy">
+		<queue-store/>
+	</queued-thread-per-processor-processing-strategy>
+	<http:listener-config name="HTTP_Listener_Configuration2" host="0.0.0.0" port="8081" basePath="/" doc:name="HTTP Listener Configuration"/>
+	<flow name="birhan2Flow" initialState="stopped" processingStrategy="Queued_Thread_Per_Processor_Processing_Strategy" tracking:enable-default-events="true">
+		<http:listener config-ref="HTTP_Listener_Configuration2" path="/hello" doc:name="HTTP"/>
+		<set-payload value="hello world" doc:name="Set Payload"/>
+		<logger message="#[message.payload]" level="INFO" doc:name="Logger"/>
+	</flow>
+</mule>
